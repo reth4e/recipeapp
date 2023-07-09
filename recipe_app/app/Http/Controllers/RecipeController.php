@@ -4,21 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class RecipeController extends Controller
 {
     public function recipes() {
-        
-        // APIキー
-        $api_key = env('SPOONACULAR_KEY');
-
         //エンドポイント
-        $url = "https://api.spoonacular.com/recipes/complexSearch?apiKey=".$api_key."&query=apple&maxReadyTime=20&number=5";
+        $endpoint = "https://api.spoonacular.com/recipes/complexSearch";
 
-        $response = Http::get($url);
-        $data = $response ->getBody();
-        $data = json_decode($data, true);
+        // ページネーションするためにページ番号と1ページあたりのアイテム数を指定
+        $page = request()->query('page', 1);
+        $perPage = 10;
 
-        return view('recipe.recipes',compact('data'));
+        $response = Http::get($endpoint, [
+            'apiKey' => env('SPOONACULAR_KEY'),
+            'query' => 'apple',
+            'number' => $perPage,
+            'offset' => ($page - 1) * $perPage,
+        ]);
+        $results = collect($response->json()['results']);
+
+        $recipes = new LengthAwarePaginator(
+            $results,
+            $response->json()['totalResults'],
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return view('recipe.recipes',compact('recipes'));
     }
 }
