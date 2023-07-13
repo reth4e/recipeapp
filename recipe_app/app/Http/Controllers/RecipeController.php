@@ -8,7 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class RecipeController extends Controller
 {
-    public function recipes() {
+    public function recipes() { //レシピ取得
         //エンドポイント
         $endpoint = "https://api.spoonacular.com/recipes/complexSearch";
 
@@ -22,6 +22,7 @@ class RecipeController extends Controller
             'number' => $perPage,
             'offset' => ($page - 1) * $perPage,
         ]);
+        //取得した情報をコレクションにする
         $results = collect($response->json()['results']);
 
         $recipes = new LengthAwarePaginator(
