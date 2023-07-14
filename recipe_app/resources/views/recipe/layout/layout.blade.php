@@ -58,6 +58,7 @@
                     <li class="header-link"><a href="/favorites">お気に入り</a></li>
                     <li class="header-link"><a href="/guide">使い方</a></li>
                     <li class="header-link"><a href="/contact">お問い合わせ</a></li>
+                    <li class="header-link"><a href="/messages">メッセージ</a></li>
                     <li class="header-link"><a href="/notifications">通知</a></li>
                 </ul>
             </nav>

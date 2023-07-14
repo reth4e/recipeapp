@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,14 +15,18 @@ use App\Http\Controllers\RecipeController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/recipes', [RecipeController::class, 'recipes']);
+Route::get('/favorites', [RecipeController::class, 'favorites']);
+Route::get('/favorite', [RecipeController::class, 'favorite']);
+Route::get('/detach_favorite', [RecipeController::class, 'detachFavorite']);
+Route::get('/guide', [RecipeController::class, 'guide']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+
+Route::get('/contact', [UserController::class, 'contact']);
+Route::get('/messages', [UserController::class, 'messages']);
+Route::get('/message', [UserController::class, 'message']);
+Route::post('/message', [UserController::class, 'sendMessage']);
+Route::post('/response', [UserController::class, 'sendResponse']);
+Route::get('/notifications', [UserController::class, 'notifications']);
 
 require __DIR__.'/auth.php';

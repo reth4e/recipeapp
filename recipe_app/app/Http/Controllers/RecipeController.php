@@ -39,4 +39,21 @@ class RecipeController extends Controller
 
         return view('recipe.recipes',compact('recipes'));
     }
+
+    public function favorite() {
+        //お気に入り追加
+    }
+
+    public function detachFavorite() {
+        //お気に入り削除
+    }
+
+    public function favorites() {
+        return view('recipe.favorites');
+    }
+
+    public function guide() {
+        return view('guide');
+        
+    }
 }
