@@ -13,54 +13,54 @@
         <header class = "header">
             <p class="header-logo">mendorecipe</p>
             
-            <!-- <form action="/pictures?contents={{$search_tags}}" method="get" class="header-form">
-                <input class="search" type="text" name="contents" placeholder="タグ名検索" value ="{{$search_tags}}" />
-                <label>新しい順
-                    <input type="radio" name="dateorder" value="new">
+            <form action="/recipes" method="get" class="header-form">
+                <input class="search" type="text" name="word" placeholder="レシピ検索"/>
+                <label>最大料理時間(分)
+                    <select name="maxReadyTime">
+                        <option value="20">20</option>
+                        <option value="30" selected>30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                        <option value="60">60</option>
+                    </select>
                 </label>
-                <label>古い順
-                    <input type="radio" name="dateorder" value="old">
+                <label>最大カロリー(kcal)
+                    <select name="maxCalories">
+                        <option value=""></option>
+                        <option value="300">300</option>
+                        <option value="400">400</option>
+                        <option value="500">500</option>
+                        <option value="600">600</option>
+                    </select>
+                </label>
+                <label>最小タンパク質(g)
+                    <select name="minProtein">
+                        <option value=""></option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                    </select>
+                </label>
+                <label>ソート基準
+                    <select name="sort">
+                        <option value="">なし</option>
+                        <option value="price">値段</option>
+                        <option value="time">時間</option>
+                        <option value="healthiness">健康度</option>
+                        <option value="random">ランダム</option>
+                    </select>
                 </label>
                 <input class="btn search-btn" type="submit" value="検索">
-            </form> -->
+            </form>
             
-            <!-- <nav class="header-nav">
-                <p class="header-menu" id="menu">メニュー</p> -->
-                <!-- 以下はクリックで表示 -->
-                <!-- <div class="dropdown" id = "dropdown">
-                    <div class="notification-block">
-                        <button class="btn-notification btn" id="btn-notification">通知</button>
-
-                        @if ($notifications -> count() > 0)
-                            <span>{{$notifications -> count()}}</span>
-                        @endif
-
-                        <div class="header-notifications" id="notifications">
-
-                            @if ($notifications -> count() > 0)
-                                <a href="/user/notifications" class="block">通知ページへ</a>
-                                <a href="/user/readall" class="mg-b-3 red block">すべて既読にする</a>
-                            @endif
-
-                            @forelse ($notifications as $notification)
-                                <div class="header-notification mg-b-3">
-                                    <a href="/user/message/{{$notification -> data['id']}}">{{$notification->data['message']}}</a>
-                                    <p>{{$notification->created_at}}</p>
-                                    <a href="/user/read/{{$notification -> id}}">既読にする</a>
-                                </div>
-                            @empty
-                                <p>お知らせはありません</p>
-                            @endforelse
-
-                        </div>
-                        
-                    </div>
-                    <ul>
-                        <li class="header-link"><a href="/user/message">メッセージ</a></li>
-                        <li class="header-link"><a href="/favorites">お気に入り</a></li>
-                    </ul>
-                </div>
-            </nav> -->
+            <nav class="header-nav">
+                <ul>
+                    <li class="header-link"><a href="/favorites">お気に入り</a></li>
+                    <li class="header-link"><a href="/guide">使い方</a></li>
+                    <li class="header-link"><a href="/contact">お問い合わせ</a></li>
+                    <li class="header-link"><a href="/notifications">通知</a></li>
+                </ul>
+            </nav>
         </header>
         
         <main>

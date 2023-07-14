@@ -8,7 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class RecipeController extends Controller
 {
-    public function recipes() { //レシピ取得
+    public function recipes(Request $request) { //レシピ取得
         //エンドポイント
         $endpoint = "https://api.spoonacular.com/recipes/complexSearch";
 
@@ -18,7 +18,11 @@ class RecipeController extends Controller
 
         $response = Http::get($endpoint, [
             'apiKey' => env('SPOONACULAR_KEY'),
-            'query' => 'apple',
+            'query' => $request->word,
+            'maxReadyTime' => (int)$request->maxReadyTime,
+            'maxCalories' => (int)$request->maxCalories,
+            'minProtein' => (int)$request->maxProtein,
+            'sort' => $request->sort,
             'number' => $perPage,
             'offset' => ($page - 1) * $perPage,
         ]);
