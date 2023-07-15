@@ -65,8 +65,17 @@
         </header>
         
         <main>
+            @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
             @yield('main')
         </main>
+
+        <footer>
+            <small class="footer-logo">2023. mendorecipe</small>
+        </footer>
     </body>
 
 </html>

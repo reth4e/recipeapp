@@ -17,8 +17,7 @@ use App\Http\Controllers\UserController;
 
 Route::get('/recipes', [RecipeController::class, 'recipes']);
 Route::get('/favorites', [RecipeController::class, 'favorites']);
-Route::get('/favorite', [RecipeController::class, 'favorite']);
-Route::get('/detach_favorite', [RecipeController::class, 'detachFavorite']);
+Route::get('/favorite/{recipe_id}', [RecipeController::class, 'favorite']);
 Route::get('/guide', [RecipeController::class, 'guide']);
 
 
@@ -26,7 +25,7 @@ Route::get('/contact', [UserController::class, 'contact']);
 Route::get('/messages', [UserController::class, 'messages']);
 Route::get('/message', [UserController::class, 'message']);
 Route::post('/message', [UserController::class, 'sendMessage']);
-Route::post('/response', [UserController::class, 'sendResponse']);
+Route::post('/reply', [UserController::class, 'sendReply']);
 Route::get('/notifications', [UserController::class, 'notifications']);
 
 require __DIR__.'/auth.php';

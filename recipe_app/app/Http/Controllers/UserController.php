@@ -22,7 +22,7 @@ class UserController extends Controller
         //メッセージを送る
     }
 
-    public function sendResponse() {
+    public function sendReply() {
         //返信をする
     }
 

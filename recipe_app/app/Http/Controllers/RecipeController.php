@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\Favorite;
+
 
 class RecipeController extends Controller
 {
@@ -40,12 +43,19 @@ class RecipeController extends Controller
         return view('recipe.recipes',compact('recipes'));
     }
 
-    public function favorite() {
-        //お気に入り追加
-    }
+    public function favorite($recipe_id) { //お気に入り追加or解除
+        $login_user = Auth::user();
+        $favorite = Favorite::where('user_id',$login_user->id)->where('recipe_id',$recipe_id)->first();
 
-    public function detachFavorite() {
-        //お気に入り削除
+        if($favorite) {
+            $favorite = $favorite->delete();
+        } else {
+            $favorite = new Favorite();
+            $favorite->user_id = $login_user->id;
+            $favorite->recipe_id = $recipe_id;
+            $favorite->save();
+        }
+        return back();
     }
 
     public function favorites() {
