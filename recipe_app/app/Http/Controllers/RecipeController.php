@@ -58,8 +58,34 @@ class RecipeController extends Controller
         return back();
     }
 
-    public function favorites() {
-        return view('recipe.favorites');
+    public function favorites() { //お気に入り表示
+        $login_user = Auth::user();
+        $favorites = $login_user->favorites;
+        // ページネーションするためにページ番号と1ページあたりのアイテム数を指定
+        $page = request()->query('page', 1);
+        $perPage = 10;
+
+        $recipes = [];
+
+        foreach($favorites as $favorite) {
+            $endpoint = "https://api.spoonacular.com/recipes/".$favorite->recipe_id."/information";
+            $response = Http::get($endpoint, [
+                'apiKey' => env('SPOONACULAR_KEY'),
+            ]);
+            $recipes[] = $response;
+
+        }
+
+        $recipes = collect($recipes);
+
+        $recipes = new LengthAwarePaginator(
+            $recipes,
+            count($recipes),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+        return view('recipe.favorites',compact('recipes'));
     }
 
     public function guide() {
