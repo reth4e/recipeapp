@@ -13,7 +13,7 @@ class MessageRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class MessageRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'max:50',
         ];
     }
 }

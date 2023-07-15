@@ -23,8 +23,8 @@ Route::get('/guide', [RecipeController::class, 'guide']);
 
 Route::get('/contact', [UserController::class, 'contact']);
 Route::get('/messages', [UserController::class, 'messages']);
-Route::get('/message', [UserController::class, 'message']);
 Route::post('/message', [UserController::class, 'sendMessage']);
+Route::get('/message/{message_id}', [UserController::class, 'message']);
 Route::post('/reply', [UserController::class, 'sendReply']);
 Route::get('/notifications', [UserController::class, 'notifications']);
 

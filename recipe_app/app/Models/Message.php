@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'content'
+    ];
+
+    public function user() {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function replies() {
+        return $this->hasMany('App\Models\Reply');
+    }
 }
