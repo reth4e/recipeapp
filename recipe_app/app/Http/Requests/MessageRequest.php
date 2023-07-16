@@ -25,6 +25,7 @@ class MessageRequest extends FormRequest
     {
         return [
             'title' => 'max:50',
+            'content' => 'max:1000',
         ];
     }
 }

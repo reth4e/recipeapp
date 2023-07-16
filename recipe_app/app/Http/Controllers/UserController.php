@@ -24,12 +24,13 @@ class UserController extends Controller
         return view('user.messages',compact('messages'));
     }
 
-    public function message() { //メッセージ個別ページ
-        return view('user.message');
+    public function message(Request $request) { //メッセージ個別ページ
+        $login_user = Auth::User();
+        $message = Message::find($request->message_id)->where('user_id',$login_user->id)->first();
+        return view('user.message',compact('message'));
     }
 
-    public function sendMessage(MessageRequest $request) {
-        //メッセージを送る
+    public function sendMessage(MessageRequest $request) { //メッセージを送る
         $login_user = Auth::User();
 
         $message = new Message();
@@ -43,8 +44,8 @@ class UserController extends Controller
         return view('user.messages');
     }
 
-    public function sendReply() {
-        //返信をする
+    public function sendReply() { //返信をする
+        return view('user.messages');
     }
 
     public function notifications() { //通知ページ

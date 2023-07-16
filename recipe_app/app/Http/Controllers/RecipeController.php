@@ -72,15 +72,21 @@ class RecipeController extends Controller
             $response = Http::get($endpoint, [
                 'apiKey' => env('SPOONACULAR_KEY'),
             ]);
-            $recipes[] = $response;
+
+            if ($response->ok()) {
+                $recipeData = $response->json(); // レスポンスからJSONデータを取得
+                $recipes[] = $recipeData; // レシピデータを配列に追加
+            }
 
         }
-
         $recipes = collect($recipes);
+        $total = $recipes->count();
+        $offset = ($page - 1) * $perPage;
+        $recipes = $recipes->slice($offset, $perPage)->all();
 
         $recipes = new LengthAwarePaginator(
             $recipes,
-            count($recipes),
+            $total,
             $perPage,
             $page,
             ['path' => request()->url(), 'query' => request()->query()]
