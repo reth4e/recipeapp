@@ -17,6 +17,7 @@
                         @endif
                     </div>
                 @endforeach
+                {{ $replies->links('pagination::bootstrap-4') }}
             </div>
             <form action="/reply/{{$message->id}}" method="POST">
                 @csrf
