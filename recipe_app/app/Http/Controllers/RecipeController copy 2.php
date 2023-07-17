@@ -12,7 +12,6 @@ use App\Models\Favorite;
 class RecipeController extends Controller
 {
     public function recipes(Request $request) { //レシピ取得
-
         //エンドポイント
         $endpoint = "https://api.spoonacular.com/recipes/complexSearch";
 
@@ -20,56 +19,22 @@ class RecipeController extends Controller
         $page = request()->query('page', 1);
         $perPage = 10;
 
-        $responses = [];
-
         $response = Http::get($endpoint, [
             'apiKey' => env('SPOONACULAR_KEY'),
             'query' => $request->word,
             'maxReadyTime' => (int)$request->maxReadyTime,
+            'maxCalories' => (int)$request->maxCalories,
+            'minProtein' => (int)$request->maxProtein,
             'sort' => $request->sort,
-            'number' => 100,
+            'number' => $perPage,
             'offset' => ($page - 1) * $perPage,
         ]);
+        //取得した情報をコレクションにする
+        $results = collect($response->json()['results']);
 
-        $responses[] = $response;
-        
-        if ($request->has('maxCalories')) {
-            $response = Http::get($endpoint, [ //ここを変更、変数名をmax_caloriesに
-                'apiKey' => env('SPOONACULAR_KEY'),
-                'query' => $request->word,
-                'maxCalories' => (int)$request->maxCalories,
-                'sort' => $request->sort,
-                'number' => 100,
-                'offset' => ($page - 1) * $perPage,
-            ]);
-            $responses[] = $response; //ここを変更する
-        }
-        
-        if ($request->has('minProtein')) {
-            $response = Http::get($endpoint, [
-                'apiKey' => env('SPOONACULAR_KEY'),
-                'query' => $request->word,
-                'minProtein' => (int)$request->minProtein,
-                'sort' => $request->sort,
-                'number' => 100,
-                'offset' => ($page - 1) * $perPage,
-            ]);
-            $responses[] = $response;
-        }
-        
-        $products = [];
-        foreach ($responses as $response) {
-            $products[] = $response->json()['results'];
-        }
-
-        $results = collect($products[0]); //取得した情報をコレクションにする
-        for ($i = 1; $i < count($products); $i++) {
-            $results = $results->intersect($products[$i]);
-        }
-        
         $recipes = new LengthAwarePaginator(
             $results,
-            $results -> count(),
+            $response->json()['totalResults'],
             $perPage,
             $page,
             ['path' => request()->url(), 'query' => request()->query()]

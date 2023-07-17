@@ -20,14 +20,21 @@ class UserController extends Controller
 
     public function messages() { //メッセージリストページ
         $login_user = Auth::User();
-        $messages = Message::where('user_id',$login_user->id)->get();
+        $messages = Message::where('user_id',$login_user->id)->orderBy('created_at','DESC')->paginate(20);
         return view('user.messages',compact('messages'));
     }
 
     public function message(Request $request) { //メッセージ個別ページ
         $login_user = Auth::User();
-        $message = Message::find($request->message_id)->where('user_id',$login_user->id)->first();
-        return view('user.message',compact('message'));
+
+        $message = Message::where('id',$request->message_id)->where('user_id',$login_user->id)->first();
+        $replies = Reply::where('message_id',$message->id)->orderBy('created_at','DESC')->paginate(20);
+
+        $data = [
+            'message' => $message,
+            'replies' => $replies,
+        ];
+        return view('user.message',$data);
     }
 
     public function sendMessage(MessageRequest $request) { //メッセージを送る
@@ -41,11 +48,28 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return view('user.messages');
+        $messages = Message::where('user_id',$login_user->id)->orderBy('created_at','DESC')->paginate(20);
+        return view('user.messages',compact('messages'));
     }
 
-    public function sendReply() { //返信をする
-        return view('user.messages');
+    public function sendReply(MessageRequest $request) { //返信をする
+        $login_user = Auth::User();
+
+        $reply = new Reply();
+        $reply -> user_id = $login_user->id;
+        $reply -> message_id = $request -> message_id;
+        $reply -> content = $request -> content;
+        $reply -> save();
+
+        $request->session()->regenerateToken();
+
+        $message = Message::where('id',$request->message_id)->where('user_id',$login_user->id)->first();
+        $replies = Reply::where('message_id',$message->id)->orderBy('created_at','DESC')->paginate(20);
+        $data = [
+            'message' => $message,
+            'replies' => $replies,
+        ];
+        return view('user.message',$data);
     }
 
     public function notifications() { //通知ページ

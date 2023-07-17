@@ -22,10 +22,10 @@ Route::get('/guide', [RecipeController::class, 'guide']);
 
 
 Route::get('/contact', [UserController::class, 'contact']);
-Route::get('/messages', [UserController::class, 'messages']);
+Route::get('/list_messages', [UserController::class, 'messages']);
 Route::post('/message', [UserController::class, 'sendMessage']);
 Route::get('/message/{message_id}', [UserController::class, 'message']);
-Route::post('/reply', [UserController::class, 'sendReply']);
+Route::post('/reply/{message_id}', [UserController::class, 'sendReply']);
 Route::get('/notifications', [UserController::class, 'notifications']);
 
 require __DIR__.'/auth.php';

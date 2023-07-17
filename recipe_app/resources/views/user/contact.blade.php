@@ -6,11 +6,11 @@
             @csrf
             <div class="flex jc-sb">
                 <p class="w-25vw bw">タイトル(50文字以内)： <span id="title-preview"></span></p>
-                <textarea name="title" id="title" cols="30" rows="10" placeholder="タイトル" required></textarea>
+                <textarea name="title" id="title" cols="30" rows="10" placeholder="タイトルはこちら" required></textarea>
             </div>
             <div class="flex jc-sb">
-                <p class="w-25vw bw">お問い合わせ内容(1000文字以内)： <span id="content-preview"></span></p>
-                <textarea name="content" id="content" cols="30" rows="10" placeholder="お問い合わせ内容" required></textarea>
+                <p class="w-25vw bw">お問い合わせ内容(1000文字以内)： <span id="content-preview"></span><span id="content-number"></span></p>
+                <textarea name="content" id="content" cols="30" rows="10" placeholder="お問い合わせ内容はこちら" required></textarea>
             </div>
             <input type="submit" id="form-post">
         </form>
@@ -38,6 +38,7 @@
         // メッセージの内容を表示する
         $('#content').keyup(function() {
             $('#content-preview').text($(this).val());
+            $('#content-number').text(' (現在'+$(this).val().length+'文字)');
         });
 
     });

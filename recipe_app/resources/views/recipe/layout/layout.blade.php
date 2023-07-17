@@ -14,7 +14,7 @@
             <p class="header-logo">mendorecipe</p>
             
             <form action="/recipes" method="get" class="header-form">
-                <input class="search" type="text" name="word" placeholder="レシピ検索"/>
+                <input class="search" type="text" name="word" placeholder="レシピ検索" required/>
                 <label>最大料理時間(分)
                     <select name="maxReadyTime">
                         <option value="20">20</option>
@@ -58,8 +58,14 @@
                     <li class="header-link"><a href="/favorites">お気に入り</a></li>
                     <li class="header-link"><a href="/guide">使い方</a></li>
                     <li class="header-link"><a href="/contact">お問い合わせ</a></li>
-                    <li class="header-link"><a href="/messages">メッセージ</a></li>
+                    <li class="header-link"><a href="/list_messages">メッセージ</a></li>
                     <li class="header-link"><a href="/notifications">通知</a></li>
+                    <li class="header-link">
+                        <form action="/logout" method="post" class="form-logout">
+                            @csrf
+                            <input class="btn btn-logout" type="submit" value="ログアウト">
+                        </form>
+                    </li>
                 </ul>
             </nav>
         </header>
