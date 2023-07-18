@@ -6,7 +6,7 @@
             <p>投稿日：{{$message->created_at}}</p>
             <p>{{$message->content}}</p>
             <div class="replies-block">
-                <p>返信</p>
+                <p>返信リスト</p>
                 @foreach($replies as $reply)
                     <div class="message-block">
                         <p>{{$reply->content}}</p>

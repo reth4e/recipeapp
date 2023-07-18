@@ -7,11 +7,28 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Favorite;
-
+use Closure;
 
 class RecipeController extends Controller
 {
+    private function arrayMultiIntersect($array1, $array2, $compareFunction) //2つの多次元配列の積集合を取得
+    {
+        return array_filter($array1, function ($item) use ($array2, $compareFunction) {
+            foreach ($array2 as $array2Item) {
+                if ($compareFunction($item, $array2Item)) {
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
     public function recipes(Request $request) { //レシピ取得
+
+        $compareDeepValue = function ($val1, $val2) 
+        {
+            return $val1['id']===$val2['id'];
+        };
 
         //エンドポイント
         $endpoint = "https://api.spoonacular.com/recipes/complexSearch";
@@ -30,11 +47,10 @@ class RecipeController extends Controller
             'number' => 100,
             'offset' => ($page - 1) * $perPage,
         ]);
-
-        $responses[] = $response;
+        $responses[] = $response->json()['results'];
         
         if ($request->has('maxCalories')) {
-            $response = Http::get($endpoint, [ //ここを変更、変数名をmax_caloriesに
+            $response = Http::get($endpoint, [ 
                 'apiKey' => env('SPOONACULAR_KEY'),
                 'query' => $request->word,
                 'maxCalories' => (int)$request->maxCalories,
@@ -42,7 +58,7 @@ class RecipeController extends Controller
                 'number' => 100,
                 'offset' => ($page - 1) * $perPage,
             ]);
-            $responses[] = $response; //ここを変更する
+            $responses[] = $response->json()['results']; 
         }
         
         if ($request->has('minProtein')) {
@@ -54,22 +70,24 @@ class RecipeController extends Controller
                 'number' => 100,
                 'offset' => ($page - 1) * $perPage,
             ]);
-            $responses[] = $response;
+            $responses[] = $response->json()['results'];
         }
         
-        $products = [];
-        foreach ($responses as $response) {
-            $products[] = $response->json()['results'];
-        }
 
-        $results = collect($products[0]); //取得した情報をコレクションにする
-        for ($i = 1; $i < count($products); $i++) {
-            $results = $results->intersect($products[$i]);
+        $results = $responses[0]; 
+        for ($i = 1; $i < count($responses); $i++) { //
+            $results = $this->arrayMultiIntersect($results, $responses[$i], $compareDeepValue);
         }
+        $results = collect($results);
+
+        $total = $results->count();
+
+        $offset = ($page - 1) * $perPage;
+        $results = $results->slice($offset, $perPage)->all();
         
         $recipes = new LengthAwarePaginator(
             $results,
-            $results -> count(),
+            $total,
             $perPage,
             $page,
             ['path' => request()->url(), 'query' => request()->query()]
