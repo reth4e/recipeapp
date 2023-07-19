@@ -59,7 +59,10 @@
                     <li class="header-link"><a href="/guide">使い方</a></li>
                     <li class="header-link"><a href="/contact">お問い合わせ</a></li>
                     <li class="header-link"><a href="/list_messages">メッセージ</a></li>
-                    <li class="header-link"><a href="/notifications">通知</a></li>
+                    <li class="header-link">
+                        <a href="/notifications">通知</a>
+                        <span></span>
+                    </li>
                     <li class="header-link">
                         <form action="/logout" method="post" class="form-logout">
                             @csrf

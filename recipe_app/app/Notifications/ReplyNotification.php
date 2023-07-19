@@ -2,25 +2,26 @@
 
 namespace App\Notifications;
 
-use App\Models\Message;
+use App\Models\Reply;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MessageNotification extends Notification
+class ReplyNotification extends Notification
 {
     use Queueable;
 
-    private Message $message;
+    private Reply $reply;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Message $message)
+    public function __construct(Reply $reply)
     {
-        $this -> message = $message;
+        $this -> reply = $reply;
     }
 
     /**
@@ -42,9 +43,17 @@ class MessageNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            'content' => $this -> message -> user -> name.'様からお問い合わせがありました。',
-            'id' => $this -> message -> id,
-        ];
+        if ($this -> reply -> user -> is_admin) {
+            return [
+                'content' => '管理者から返信がありました。',
+                'id' => $this -> reply -> message -> id,
+            ];
+        } else {
+            return [
+                'content' => $this -> reply -> user -> name.'様からご返信がありました。',
+                'id' => $this -> reply -> message -> id,
+            ];
+        }
+        
     }
 }

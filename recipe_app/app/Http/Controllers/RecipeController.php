@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Favorite;
-use Closure;
 
 class RecipeController extends Controller
 {

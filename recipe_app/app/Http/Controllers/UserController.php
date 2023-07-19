@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Message;
 use App\Models\Reply;
-use App\Notifications\PictureNotification;
+use App\Notifications\MessageNotification;
+use App\Notifications\ReplyNotification;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\MessageRequest;
 
@@ -55,6 +56,9 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
+        $admin = User::where('is_admin',1)->get();
+        Notification::send($admin, new MessageNotification($message));
+
         $messages = Message::where('user_id',$login_user->id)->orderBy('created_at','DESC')->paginate(20);
         return view('user.messages',compact('messages'));
     }
@@ -63,7 +67,7 @@ class UserController extends Controller
         $login_user = Auth::User();
 
         $reply = new Reply();
-        $reply -> user_id = $login_user->id;
+        $reply -> user_id = $login_user -> id;
         $reply -> message_id = $request -> message_id;
         $reply -> content = $request -> content;
         $reply -> save();
@@ -72,8 +76,12 @@ class UserController extends Controller
 
         if($login_user->is_admin) {
             $message = Message::where('id',$request->message_id)->first();
+            $user = $message -> user;
+            Notification::send($user, new ReplyNotification($reply));
         } else {
             $message = Message::where('id',$request->message_id)->where('user_id',$login_user->id)->first();
+            $admin = User::where('is_admin',1)->get();
+            Notification::send($admin, new ReplyNotification($reply));
         }
 
         $replies = Reply::where('message_id',$message->id)->orderBy('created_at','DESC')->paginate(20);
@@ -85,6 +93,10 @@ class UserController extends Controller
     }
 
     public function notifications() { //通知ページ
-        return view('user.notifications');
+        $login_user = Auth::User();
+        $data = [
+        'notifications' => $login_user -> unreadNotifications() -> paginate(10),
+        ];
+        return view('user.notifications',$data);
     }
 }
