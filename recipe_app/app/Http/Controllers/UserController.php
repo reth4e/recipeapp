@@ -56,7 +56,7 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        $admin = User::where('is_admin',1)->get();
+        $admin = User::where('is_admin',1) -> get();
         Notification::send($admin, new MessageNotification($message));
 
         $messages = Message::where('user_id',$login_user->id)->orderBy('created_at','DESC')->paginate(20);
@@ -95,7 +95,7 @@ class UserController extends Controller
     public function notifications() { //通知ページ
         $login_user = Auth::User();
         $data = [
-        'notifications' => $login_user -> unreadNotifications() -> paginate(10),
+            'notifications' => $login_user -> unreadNotifications() -> paginate(10),
         ];
         return view('user.notifications',$data);
     }

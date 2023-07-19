@@ -61,7 +61,11 @@
                     <li class="header-link"><a href="/list_messages">メッセージ</a></li>
                     <li class="header-link">
                         <a href="/notifications">通知</a>
-                        <span></span>
+                        @if (auth()->user()->unreadNotifications->count() < 21)
+                            <span>{{auth()->user()->unreadNotifications->count()}}</span>
+                        @else
+                            <span>20 +</span>
+                        @endif
                     </li>
                     <li class="header-link">
                         <form action="/logout" method="post" class="form-logout">
