@@ -60,6 +60,8 @@ class UserController extends Controller
         Notification::send($admin, new MessageNotification($message));
 
         $messages = Message::where('user_id',$login_user->id)->orderBy('created_at','DESC')->paginate(20);
+        session()->flash('status', 'メッセージ送信しました');
+
         return view('user.messages',compact('messages'));
     }
 
@@ -88,6 +90,9 @@ class UserController extends Controller
         }
 
         $replies = Reply::where('message_id',$message->id)->orderBy('created_at','DESC')->paginate(20);
+
+        session()->flash('status', '返信しました');
+
         $data = [
             'message' => $message,
             'replies' => $replies,
@@ -99,5 +104,20 @@ class UserController extends Controller
         $login_user = Auth::User();
         $notifications = $login_user -> unreadNotifications() -> paginate(10);
         return view('user.notifications',compact('notifications'));
+    }
+
+    public function read (Request $request) {
+        // 1件の未読通知を既読化（一般ユーザーのみ）
+        $login_user = Auth::user();
+        if($login_user->is_admin) {
+            session()->flash('status', '管理者はこの機能を利用できません');
+            return back();
+        }
+
+        $notification = $login_user -> notifications() -> find($request -> notification_id);
+        $notification -> markAsRead();
+        session()->flash('status', '既読化しました');
+
+        return back();
     }
 }

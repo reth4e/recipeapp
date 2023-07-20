@@ -3,9 +3,17 @@
     <div class="container">
         @if($recipes)
             @foreach($recipes as $recipe)
-                <img src="{{$recipe['image']}}" alt="">
-                <a href="https://spoonacular.com/recipes/{{str_replace(',','',str_replace('&','',str_replace(' ', '-', strtolower($recipe['title']))))}}-{{$recipe['id']}}">{{$recipe['title']}}</a>
-                <a href="/favorite/{{$recipe['id']}}" class="like-link">お気に入り追加or解除</a>
+                <div class="recipe-card">
+                    <img src="{{$recipe['image']}}" alt="">
+                    <a href="https://spoonacular.com/recipes/{{str_replace(',','',str_replace('&','',str_replace(' ', '-', strtolower($recipe['title']))))}}-{{$recipe['id']}}">{{$recipe['title']}}</a>
+                    <a href="/favorite/{{$recipe['id']}}" class="like-link">
+                        @if (auth() -> user()-> favorites() -> where('user_id', Auth::id()) -> where('recipe_id', $recipe['id']) -> exists())
+                            お気に入り解除
+                        @else
+                            お気に入り登録
+                        @endif
+                    </a>
+                </div>
             @endforeach
             {{ $recipes->links('pagination::bootstrap-4') }}
         @else

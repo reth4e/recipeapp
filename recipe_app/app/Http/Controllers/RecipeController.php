@@ -24,7 +24,7 @@ class RecipeController extends Controller
 
     public function recipes(Request $request) { //レシピ取得
 
-        $compareDeepValue = function ($val1, $val2) 
+        $compareDeepValue = function ($val1, $val2)  //id属性の値を比較
         {
             return $val1['id']===$val2['id'];
         };
@@ -100,12 +100,16 @@ class RecipeController extends Controller
 
         if($favorite) {
             $favorite = $favorite->delete();
+            session()->flash('status', 'お気に入り解除しました');
         } else {
             $favorite = new Favorite();
             $favorite->user_id = $login_user->id;
             $favorite->recipe_id = $recipe_id;
             $favorite->save();
+            session()->flash('status', 'お気に入り登録しました');
         }
+
+
         return back();
     }
 

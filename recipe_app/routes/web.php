@@ -27,5 +27,6 @@ Route::post('/message', [UserController::class, 'sendMessage']);
 Route::get('/message/{message_id}', [UserController::class, 'message']);
 Route::post('/reply/{message_id}', [UserController::class, 'sendReply']);
 Route::get('/notifications', [UserController::class, 'notifications']);
+Route::get('/notification/{notification_id}', [UserController::class, 'read']);
 
 require __DIR__.'/auth.php';
