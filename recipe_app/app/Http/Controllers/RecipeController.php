@@ -38,39 +38,79 @@ class RecipeController extends Controller
 
         $responses = [];
 
-        $response = Http::get($endpoint, [ //準備時間の最大値を設定して取得
-            'apiKey' => env('SPOONACULAR_KEY'),
-            'query' => $request->word,
-            'maxReadyTime' => (int)$request->maxReadyTime,
-            'sort' => $request->sort,
-            'number' => 100,
-            'offset' => ($page - 1) * $perPage,
-        ]);
-        $responses[] = $response->json()['results'];
-        
-        if ($request->has('maxCalories')) { //最大カロリー量を設定して取得
-            $response = Http::get($endpoint, [ 
+        if ($request->sort === 'price' || $request->sort === 'time') { //ソート基準が時間かお金の場合は昇順にする
+            $response = Http::get($endpoint, [ //準備時間の最大値を設定して取得
                 'apiKey' => env('SPOONACULAR_KEY'),
                 'query' => $request->word,
-                'maxCalories' => (int)$request->maxCalories,
+                'maxReadyTime' => (int)$request->maxReadyTime,
                 'sort' => $request->sort,
+                'sortDirection' => 'asc',
                 'number' => 100,
                 'offset' => ($page - 1) * $perPage,
             ]);
-            $responses[] = $response->json()['results']; 
-        }
-        
-        if ($request->has('minProtein')) { //最小タンパク質量を設定して取得
-            $response = Http::get($endpoint, [
+            $responses[] = $response->json()['results'];
+            
+            if ($request->has('maxCalories')) { //最大カロリー量を設定して取得
+                $response = Http::get($endpoint, [ 
+                    'apiKey' => env('SPOONACULAR_KEY'),
+                    'query' => $request->word,
+                    'maxCalories' => (int)$request->maxCalories,
+                    'sort' => $request->sort,
+                    'sortDirection' => 'asc',
+                    'number' => 100,
+                    'offset' => ($page - 1) * $perPage,
+                ]);
+                $responses[] = $response->json()['results']; 
+            }
+            
+            if ($request->has('minProtein')) { //最小タンパク質量を設定して取得
+                $response = Http::get($endpoint, [
+                    'apiKey' => env('SPOONACULAR_KEY'),
+                    'query' => $request->word,
+                    'minProtein' => (int)$request->minProtein,
+                    'sort' => $request->sort,
+                    'sortDirection' => 'asc',
+                    'number' => 100,
+                    'offset' => ($page - 1) * $perPage,
+                ]);
+                $responses[] = $response->json()['results'];
+            }
+        } else { //ソート基準が時間かお金以外の場合は降順にする
+            $response = Http::get($endpoint, [ //準備時間の最大値を設定して取得
                 'apiKey' => env('SPOONACULAR_KEY'),
                 'query' => $request->word,
-                'minProtein' => (int)$request->minProtein,
+                'maxReadyTime' => (int)$request->maxReadyTime,
                 'sort' => $request->sort,
                 'number' => 100,
                 'offset' => ($page - 1) * $perPage,
             ]);
             $responses[] = $response->json()['results'];
+            
+            if ($request->has('maxCalories')) { //最大カロリー量を設定して取得
+                $response = Http::get($endpoint, [ 
+                    'apiKey' => env('SPOONACULAR_KEY'),
+                    'query' => $request->word,
+                    'maxCalories' => (int)$request->maxCalories,
+                    'sort' => $request->sort,
+                    'number' => 100,
+                    'offset' => ($page - 1) * $perPage,
+                ]);
+                $responses[] = $response->json()['results']; 
+            }
+            
+            if ($request->has('minProtein')) { //最小タンパク質量を設定して取得
+                $response = Http::get($endpoint, [
+                    'apiKey' => env('SPOONACULAR_KEY'),
+                    'query' => $request->word,
+                    'minProtein' => (int)$request->minProtein,
+                    'sort' => $request->sort,
+                    'number' => 100,
+                    'offset' => ($page - 1) * $perPage,
+                ]);
+                $responses[] = $response->json()['results'];
+            }
         }
+        
         
 
         $results = $responses[0]; 
