@@ -5,7 +5,7 @@
         <form action="/message" method="POST">
             @csrf
             <div class="flex jc-sb">
-                <p class="w-25vw bw">タイトル(50文字以内)： <span id="title-preview"></span></p>
+                <p class="w-25vw bw">タイトル(50文字以内)： <span id="title-preview"></span><span id="title-number"></span></p>
                 <textarea name="title" id="title" cols="30" rows="10" placeholder="タイトルはこちら" required></textarea>
             </div>
             <div class="flex jc-sb">
@@ -33,6 +33,7 @@
         // タイトルの内容を表示する
         $('#title').keyup(function() {
             $('#title-preview').text($(this).val());
+            $('#title-number').text(' (現在'+$(this).val().length+'文字)');
         });
 
         // メッセージの内容を表示する

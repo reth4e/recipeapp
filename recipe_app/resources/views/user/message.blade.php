@@ -5,6 +5,12 @@
             <p>{{$message->title}}</p>
             <p>投稿日：{{$message->created_at}}</p>
             <p>{{$message->content}}</p>
+            <form action="/reply/{{$message->id}}" method="POST">
+                @csrf
+                <p class="w-25vw bw">ご返信内容(1000文字以内)： <span id="content-preview"></span><span id="content-number"></span></p>
+                <textarea name="content" id="content" cols="30" rows="10"  placeholder="ご返信内容はこちら" required></textarea>
+                <input type="submit" id="form-post">
+            </form>
             <div class="replies-block">
                 <p>返信リスト</p>
                 @foreach($replies as $reply)
@@ -19,12 +25,6 @@
                 @endforeach
                 {{ $replies->links('pagination::bootstrap-4') }}
             </div>
-            <form action="/reply/{{$message->id}}" method="POST">
-                @csrf
-                <p class="w-25vw bw">ご返信内容(1000文字以内)： <span id="content-preview"></span><span id="content-number"></span></p>
-                <textarea name="content" id="content" cols="30" rows="10"  placeholder="ご返信内容はこちら" required></textarea>
-                <input type="submit" id="form-post">
-            </form>
         </div>
     </div>
 @endsection

@@ -72,6 +72,9 @@ class UserController extends Controller
         $reply -> content = $request -> content;
         $reply -> save();
 
+        $notification_m = $login_user -> notifications() -> where('data->id',$request -> message_id) -> get();
+        $notification_m -> markAsRead(); //メッセージに関する通知を既読化
+
         $request->session()->regenerateToken();
 
         if($login_user->is_admin) {
@@ -94,9 +97,7 @@ class UserController extends Controller
 
     public function notifications() { //通知ページ
         $login_user = Auth::User();
-        $data = [
-            'notifications' => $login_user -> unreadNotifications() -> paginate(10),
-        ];
-        return view('user.notifications',$data);
+        $notifications = $login_user -> unreadNotifications() -> paginate(10);
+        return view('user.notifications',compact('notifications'));
     }
 }

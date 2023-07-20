@@ -38,7 +38,7 @@ class RecipeController extends Controller
 
         $responses = [];
 
-        $response = Http::get($endpoint, [
+        $response = Http::get($endpoint, [ //準備時間の最大値を設定して取得
             'apiKey' => env('SPOONACULAR_KEY'),
             'query' => $request->word,
             'maxReadyTime' => (int)$request->maxReadyTime,
@@ -48,7 +48,7 @@ class RecipeController extends Controller
         ]);
         $responses[] = $response->json()['results'];
         
-        if ($request->has('maxCalories')) {
+        if ($request->has('maxCalories')) { //最大カロリー量を設定して取得
             $response = Http::get($endpoint, [ 
                 'apiKey' => env('SPOONACULAR_KEY'),
                 'query' => $request->word,
@@ -60,7 +60,7 @@ class RecipeController extends Controller
             $responses[] = $response->json()['results']; 
         }
         
-        if ($request->has('minProtein')) {
+        if ($request->has('minProtein')) { //最小タンパク質量を設定して取得
             $response = Http::get($endpoint, [
                 'apiKey' => env('SPOONACULAR_KEY'),
                 'query' => $request->word,
@@ -74,16 +74,15 @@ class RecipeController extends Controller
         
 
         $results = $responses[0]; 
-        for ($i = 1; $i < count($responses); $i++) { //
+        for ($i = 1; $i < count($responses); $i++) { //and検索のために積集合を取得
             $results = $this->arrayMultiIntersect($results, $responses[$i], $compareDeepValue);
         }
+
         $results = collect($results);
-
         $total = $results->count();
-
         $offset = ($page - 1) * $perPage;
         $results = $results->slice($offset, $perPage)->all();
-        
+
         $recipes = new LengthAwarePaginator(
             $results,
             $total,
