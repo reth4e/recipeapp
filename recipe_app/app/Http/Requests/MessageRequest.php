@@ -28,4 +28,12 @@ class MessageRequest extends FormRequest
             'content' => 'max:1000',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'title.max' => 'タイトルは50文字以内にしてください',
+            'content.max' => 'メッセージは1000文字以内にしてください',
+        ];
+    }
 }

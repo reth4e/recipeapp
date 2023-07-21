@@ -2,6 +2,15 @@
 @section('main')
     <div class="container">
         <p>お問い合わせフォーム</p>
+        <div>  
+            @if ($errors->any())  
+                <ul>  
+                    @foreach ($errors->all() as $error)  
+                        <li>{{ $error }}</li>  
+                    @endforeach  
+                </ul>  
+            @endif  
+        </div>
         <form action="/message" method="POST">
             @csrf
             <div class="flex jc-sb">
