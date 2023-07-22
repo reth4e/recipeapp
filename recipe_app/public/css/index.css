@@ -1,6 +1,38 @@
+body {
+    overflow-x: hidden;
+}
+
 a {
     text-decoration: none;
     color: #007bff;
+    font-size: 1vw;
+}
+
+.flex {
+    display: flex;
+}
+
+.jc-sb {
+    justify-content: space-between;
+}
+
+.float-r {
+    float: right;
+}
+
+.mb-1 {
+    margin-bottom: 1vh;
+}
+
+.fs-1 {
+    font-size: 1vw;
+}
+
+.ttl {
+    text-align: center;
+    font-size: 3vw;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
 }
 
 .header {
@@ -8,7 +40,6 @@ a {
     justify-content: space-between;
     padding: 5vh 0;
     width: 100vw;
-    height: 15vh;
     box-sizing: border-box;
     background-color: orange;
 }
@@ -20,13 +51,13 @@ a {
 }
 
 .header-form {
-    width: 25vw;
-    display: flex;
+    width: 30vw;
 }
 
 .search {
-    width: 70%;
-    display: inline-block;
+    width: 80%;
+    margin: 1vh 0 1vh auto;
+    display: block;
 }
 
 .search-btn {
@@ -43,13 +74,13 @@ a {
 
 
 .header-link {
-    width: 6vw;
     cursor: pointer;
 }
 
 
 .btn-logout {
     border: none;
+    border-radius: 1vw;
     background-color: #eee;
     font-size: 1.5vw;
     font-weight: bold;
@@ -70,4 +101,18 @@ a {
 .footer-logo {
     font-size: 1vw;
     font-weight: bold;
+}
+
+
+
+
+
+@media screen and (max-width: 425px) {
+    .header-form {
+        width: auto;
+    }
+
+    .search-btn {
+        width: auto;
+    }
 }

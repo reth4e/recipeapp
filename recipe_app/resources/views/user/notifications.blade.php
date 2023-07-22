@@ -3,6 +3,7 @@
 @section('main')
     <div class="container">
         <div class="notifications">
+            <p class="ttl">通知</p>
             @forelse ($notifications as $notification)
                 <div class="notification mg-b-10">
                     <a href="/message/{{$notification -> data['id']}}">{{$notification->data['content']}}</a>
