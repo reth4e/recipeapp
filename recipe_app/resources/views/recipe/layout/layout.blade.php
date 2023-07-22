@@ -85,7 +85,7 @@
             </nav>
         </header>
         
-        <main>
+        <main class="mt-10">
             @if (session('status'))
                 <div class="alert alert-success">
                     {{ session('status') }}

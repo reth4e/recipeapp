@@ -16,6 +16,14 @@ a {
     justify-content: space-between;
 }
 
+.wrap {
+    flex-wrap: wrap;
+}
+
+.gap-5 {
+    gap: 5vw;
+}
+
 .float-r {
     float: right;
 }
@@ -28,10 +36,25 @@ a {
     font-size: 1vw;
 }
 
+.mt-10 {
+    margin-top: 10vh;
+}
+
+.mb-10 {
+    margin-bottom: 10vh;
+}
+
+.ml-8 {
+    margin-left: 8vw;
+}
+
+.ds-b {
+    display: block;
+}
+
 .ttl {
     text-align: center;
     font-size: 3vw;
-    margin-top: 5vh;
     margin-bottom: 5vh;
 }
 
@@ -104,6 +127,23 @@ a {
 }
 
 
+
+.container {
+    width: 100vw;
+    text-align: center;
+}
+
+
+.recipe-card {
+    background-color: aquamarine;
+    border-radius: 3px;
+    width: 25vw;
+}
+
+
+.image {
+    width: 25vw;
+}
 
 
 

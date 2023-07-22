@@ -1,7 +1,7 @@
 @extends('recipe.layout.layout')
 @section('main')
     <div class="container">
-        <p>メッセージリスト</p>
+        <p class="ttl">メッセージリスト</p>
         @foreach($messages as $message)
             <div class="message-block">
                 <a href="/message/{{$message->id}}">{{$message->title}}</a>
