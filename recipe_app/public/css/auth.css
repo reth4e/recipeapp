@@ -1,0 +1,90 @@
+a {
+    text-decoration: none;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.mtb-1 {
+    margin: 1vh 0;
+}
+
+.mr-1 {
+    margin-right: 1vw;
+}
+
+.mb-1 {
+  margin-bottom: 1vh;
+}
+
+.fs-1 {
+  font-size: 1vw;
+}
+
+
+/* ボディ全体の背景色やフォント設定などをカスタマイズ */
+body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+  /* ログイン/新規登録フォームのコンテナを中央揃えにする */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.auth-title {
+    text-align: center;
+    font-size: 2vw;
+    margin-bottom: 2vh;
+}
+
+  /* フォームの背景色や枠線をカスタマイズ */
+.auth-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 3vw;
+    max-width: 30vw;
+    width: 100%;
+}
+
+  /* 入力フォームのスタイルをカスタマイズ */
+.auth-card input[type="email"],
+.auth-card input[type="text"],
+.auth-card input[type="password"] {
+    width: 100%;
+    padding: 1vw;
+    margin-bottom: 1vh;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+  /* ボタンのスタイルをカスタマイズ */
+.auth-card button {
+    width: 100%;
+    padding: 1vw;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+  /* リンクのスタイルをカスタマイズ */
+.auth-card a {
+    color: #007bff;
+}
+
+  /* メッセージのスタイルをカスタマイズ */
+.auth-card .alert {
+    margin-top: 1.5vw;
+    padding: 1.5vw;
+    border-radius: 1vw;
+}
+

@@ -16,6 +16,10 @@ class UserController extends Controller
 {
     public function contact() { //お問い合わせページ
         $login_user = Auth::User();
+        if ($login_user -> is_admin) {
+            session()->flash('status', '管理者はこの機能を利用できません');
+            return back();
+        }
         return view('user.contact');
     }
 
@@ -89,15 +93,8 @@ class UserController extends Controller
             Notification::send($admin, new ReplyNotification($reply));
         }
 
-        $replies = Reply::where('message_id',$message->id)->orderBy('created_at','DESC')->paginate(20);
-
         session()->flash('status', '返信しました');
-
-        $data = [
-            'message' => $message,
-            'replies' => $replies,
-        ];
-        return view('user.message',$data);
+        return back();
     }
 
     public function notifications() { //通知ページ

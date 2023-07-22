@@ -86,7 +86,7 @@
             @yield('main')
         </main>
 
-        <footer>
+        <footer class="footer">
             <small class="footer-logo">2023. mendorecipe</small>
         </footer>
     </body>
