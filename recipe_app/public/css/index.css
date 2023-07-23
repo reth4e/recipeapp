@@ -8,6 +8,10 @@ a {
     font-size: 1vw;
 }
 
+.d-ib {
+    display: inline-block;
+}
+
 .flex {
     display: flex;
 }
@@ -85,6 +89,10 @@ a {
     color: red;
 }
 
+.bc-eee {
+    background-color: #eee;
+}
+
 .ta-center {
     text-align: center;
 }
@@ -92,6 +100,10 @@ a {
 .m-lr-auto {
     margin-left: auto;
     margin-right: auto;
+}
+
+.p-5 {
+    padding: 5vh 5vw;
 }
 
 
