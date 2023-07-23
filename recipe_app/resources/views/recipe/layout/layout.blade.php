@@ -85,9 +85,9 @@
             </nav>
         </header>
         
-        <main class="mt-10">
+        <main class="mtb-10">
             @if (session('status'))
-                <div class="alert alert-success">
+                <div class="alert alert-success red fs-3 mb-10 ta-center">
                     {{ session('status') }}
                 </div>
             @endif

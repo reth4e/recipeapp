@@ -1,25 +1,25 @@
 @extends('recipe.layout.layout')
 @section('main')
     <div class="container">
-        <p>お問い合わせフォーム</p>
+        <p class="ttl">お問い合わせフォーム</p>
         <div>  
             @if ($errors->any())  
-                <ul>  
+                <ul class="mb-10 red fs-1">  
                     @foreach ($errors->all() as $error)  
-                        <li>{{ $error }}</li>  
+                        <li class="mb-1">{{ $error }}</li>  
                     @endforeach  
                 </ul>  
             @endif  
         </div>
-        <form action="/message" method="POST">
+        <form action="/message" method="POST" class="contact-form">
             @csrf
-            <div class="flex jc-sb">
-                <p class="w-25vw bw">タイトル(50文字以内)： <span id="title-preview"></span><span id="title-number"></span></p>
-                <textarea name="title" id="title" cols="30" rows="10" placeholder="タイトルはこちら" required></textarea>
+            <div class="flex jc-sb mb-10">
+                <p class="w-25vw bw fs-1">タイトル(50文字以内)： <span id="title-preview"></span><span id="title-number"></span></p>
+                <textarea name="title" id="title" class="fs-1" cols="50" rows="30" placeholder="タイトルはこちら" required></textarea>
             </div>
-            <div class="flex jc-sb">
-                <p class="w-25vw bw">お問い合わせ内容(1000文字以内)： <span id="content-preview"></span><span id="content-number"></span></p>
-                <textarea name="content" id="content" cols="30" rows="10" placeholder="お問い合わせ内容はこちら" required></textarea>
+            <div class="flex jc-sb mb-10">
+                <p class="w-25vw bw fs-1">お問い合わせ内容(1000文字以内)： <span id="content-preview"></span><span id="content-number"></span></p>
+                <textarea name="content" id="content" class="fs-1" cols="50" rows="30" placeholder="お問い合わせ内容はこちら" required></textarea>
             </div>
             <input type="submit" id="form-post">
         </form>
