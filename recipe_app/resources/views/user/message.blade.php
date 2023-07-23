@@ -3,7 +3,7 @@
     <div class="container">
         <div class="message-block">
             <p class="mb-5 fs-2">タイトル：{{$message->title}}</p>
-            <p class="mb-5 fs-1">投稿日：{{$message->created_at}}</p>
+            <p class="mb-5 fs-1">ユーザー名:{{$message->user->name}}, 投稿日：{{$message->created_at}}</p>
             <p class="mb-5 fs-1">お問い合わせ内容：{{$message->content}}</p>
         </div>
         <div>  
@@ -28,12 +28,12 @@
                     @if($message->user_id !== $reply->user_id)
                         <div class="admin-comment mb-10 fs-1 w-80vw">
                             <p class="bw mb-5">{{$reply->content}}</p>
-                            <p>返信日：{{$reply->created_at}}</p>
+                            <p>返信者:{{$reply->user->name}}, 返信日：{{$reply->created_at}}</p>
                         </div>
                     @else
                         <div class="user-comment mb-10 fs-1 w-80vw">
                             <p class="bw mb-5">{{$reply->content}}</p>
-                            <p>返信日：{{$reply->created_at}}</p>
+                            <p>返信者:{{$reply->user->name}}, 返信日：{{$reply->created_at}}</p>
                         </div>
                     @endif
                 </div>
