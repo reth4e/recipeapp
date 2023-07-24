@@ -11,11 +11,11 @@
 
 < --- 検索画像 ---- >
 
-![検索画面](storage/app/public/images/search.png)
+![検索画面](public/images/search.png)
 
 < --- レシピ一覧画像 ---- >
 
-![レシピ一覧画面](storage/app/public/images/recipes.png)
+![レシピ一覧画面](public/images/recipes.png)
 
 
 ## 作成した目的
