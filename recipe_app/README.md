@@ -9,12 +9,13 @@
 
 以下はレシピ検索のスクリーンショットです。
 
-< --- 画像 ---- >
+< --- 検索画像 ---- >
 
-![検索画面](search.png)
+![検索画面](storage/app/public/images/search.png)
 
+< --- レシピ一覧画像 ---- >
 
-![レシピ一覧画面](recipes.png)
+![レシピ一覧画面](storage/app/public/images/recipes.png)
 
 
 ## 作成した目的
@@ -43,7 +44,6 @@
 
 
 ## テーブル設計
-< --- 作成したテーブル設計の画像 ---- >
 
 ![table1](table1.png)
 
@@ -51,6 +51,5 @@
 
 
 ## ER図
-< --- 作成したER図の画像 ---- >
 
 ![ER](er.drawio.png)

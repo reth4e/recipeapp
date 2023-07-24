@@ -73,6 +73,10 @@ a {
     width: 25vw;
 }
 
+.w-60vw {
+    width: 60vw;
+}
+
 .w-80vw {
     width: 80vw;
 }
