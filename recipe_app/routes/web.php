@@ -18,14 +18,14 @@ use App\Http\Controllers\UserController;
 Route::group(['middleware' => 'auth'],function() {
     Route::get('/recipes', [RecipeController::class, 'recipes']);
     Route::get('/favorites', [RecipeController::class, 'favorites']);
-    Route::get('/favorite/{recipe_id}', [RecipeController::class, 'favorite']);
+    Route::get('/favorite/{recipe_id}', [RecipeController::class, 'favorite'])->name('favorite');;
     Route::get('/guide', [RecipeController::class, 'guide']);
 
     Route::get('/contact', [UserController::class, 'contact']);
     Route::get('/list_messages', [UserController::class, 'messages']);
     Route::post('/message', [UserController::class, 'sendMessage']);
-    Route::get('/message/{message_id}', [UserController::class, 'message']);
-    Route::post('/reply/{message_id}', [UserController::class, 'sendReply']);
+    Route::get('/message/{message_id}', [UserController::class, 'message'])->name('message');;
+    Route::post('/reply/{message_id}', [UserController::class, 'sendReply'])->name('reply');;
     Route::get('/notifications', [UserController::class, 'notifications']);
     Route::get('/notification/{notification_id}', [UserController::class, 'read']);
 });

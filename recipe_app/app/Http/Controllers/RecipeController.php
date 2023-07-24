@@ -22,7 +22,7 @@ class RecipeController extends Controller
         });
     }
 
-    public function recipes(Request $request) { //レシピ取得
+    public function recipes(Request $request) { //検索条件でレシピ取得
 
         $compareDeepValue = function ($val1, $val2)  //id属性の値を比較
         {
@@ -38,7 +38,7 @@ class RecipeController extends Controller
 
         $responses = [];
 
-        if ($request->sort === 'price' || $request->sort === 'time') { //ソート基準が時間かお金の場合は昇順にする
+        if ($request->sort === 'price' || $request->sort === 'time') { //ソート基準が時間かお金の場合はsortDirectionを昇順にする
             $response = Http::get($endpoint, [ //準備時間の最大値を設定して取得
                 'apiKey' => env('SPOONACULAR_KEY'),
                 'query' => $request->word,
@@ -75,7 +75,7 @@ class RecipeController extends Controller
                 ]);
                 $responses[] = $response->json()['results'];
             }
-        } else { //ソート基準が時間かお金以外の場合は降順にする
+        } else { //ソート基準が時間かお金以外の場合はsortDirectionを降順(デフォルト)にする
             $response = Http::get($endpoint, [ //準備時間の最大値を設定して取得
                 'apiKey' => env('SPOONACULAR_KEY'),
                 'query' => $request->word,
@@ -153,7 +153,7 @@ class RecipeController extends Controller
         return back();
     }
 
-    public function favorites() { //お気に入り表示
+    public function favorites() { //お気に入りリスト表示
         $login_user = Auth::user();
         $favorites = $login_user->favorites;
         // ページネーションするためにページ番号と1ページあたりのアイテム数を指定
@@ -189,8 +189,7 @@ class RecipeController extends Controller
         return view('recipe.favorites',compact('recipes'));
     }
 
-    public function guide() {
+    public function guide() { //使い方ページ表示
         return view('guide');
-        
     }
 }
