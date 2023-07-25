@@ -23,32 +23,6 @@ class UserController extends Controller
         return view('user.contact');
     }
 
-    public function messages() { //メッセージリストページ
-        $login_user = Auth::User();
-        $messages = Message::where('user_id',$login_user->id)->orderBy('created_at','DESC')->paginate(20);
-
-        if($login_user->is_admin){
-            $messages = Message::orderBy('created_at','DESC')->paginate(20);
-        }
-        return view('user.messages',compact('messages'));
-    }
-
-    public function message(Request $request) { //メッセージ個別ページ
-        $login_user = Auth::User();
-
-        $message = Message::where('id',$request->message_id)->where('user_id',$login_user->id)->first();
-        if($login_user->is_admin){
-            $message = Message::where('id',$request->message_id)->first();
-        }
-        $replies = Reply::where('message_id',$message->id)->orderBy('created_at','DESC')->paginate(20);
-
-        $data = [
-            'message' => $message,
-            'replies' => $replies,
-        ];
-        return view('user.message',$data);
-    }
-
     public function sendMessage(MessageRequest $request) { //メッセージを送る
         $login_user = Auth::User();
 
@@ -95,6 +69,32 @@ class UserController extends Controller
 
         session()->flash('status', '返信しました');
         return back();
+    }
+
+    public function messages() { //メッセージリストページ
+        $login_user = Auth::User();
+        $messages = Message::where('user_id',$login_user->id)->orderBy('created_at','DESC')->paginate(20);
+
+        if($login_user->is_admin){
+            $messages = Message::orderBy('created_at','DESC')->paginate(20);
+        }
+        return view('user.messages',compact('messages'));
+    }
+
+    public function message(Request $request) { //メッセージ個別ページ
+        $login_user = Auth::User();
+
+        $message = Message::where('id',$request->message_id)->where('user_id',$login_user->id)->first();
+        if($login_user->is_admin){
+            $message = Message::where('id',$request->message_id)->first();
+        }
+        $replies = Reply::where('message_id',$message->id)->orderBy('created_at','DESC')->paginate(20);
+
+        $data = [
+            'message' => $message,
+            'replies' => $replies,
+        ];
+        return view('user.message',$data);
     }
 
     public function notifications() { //通知ページ
