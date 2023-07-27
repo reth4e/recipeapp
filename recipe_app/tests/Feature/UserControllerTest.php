@@ -130,5 +130,69 @@ class UserControllerTest extends TestCase
         $response->assertSee("sampletitle"); //タイトルとメッセージ内容が表示されているか確認
     }
 
-    
+    public function testNotifications() //notificationsのテスト
+    {
+        $login_user = User::factory() -> create();
+        $admin_user = User::factory() -> create();
+        $admin_user->is_admin = 1; //管理者にする
+        $admin_user->save();
+        $this -> actingAs($login_user);
+
+        $data = [
+            'title' => 'sampletitle',
+            'content' => 'samplemessage',
+        ];
+
+        $response = $this->post('/message' ,$data);
+
+        $this->actingAs($admin_user); //管理者でログインしてユーザーからの通知が表示されるか確認
+        $response = $this->get('/notifications')->assertSee($login_user->name.'様からお問い合わせがありました。');
+
+        $message = Message::latest()->first();
+        $response = $this->post(route('reply', [ //返信する
+            'message_id' => $message->id,
+            'content' => 'samplereply',
+        ]));
+
+        $this -> actingAs($login_user); //管理者からの返信の通知が表示されるか確認
+        $response = $this->get('/notifications')->assertDontSee($login_user->name.'様からお問い合わせがありました。');
+        $response = $this->get('/notifications')->assertSee('管理者から返信がありました。');
+    }
+
+    public function testRead() //readのテスト
+    {
+        $login_user = User::factory() -> create();
+        $admin_user = User::factory() -> create();
+        $admin_user->is_admin = 1; //管理者にする
+        $admin_user->save();
+        $this -> actingAs($login_user);
+
+        $data = [
+            'title' => 'sampletitle',
+            'content' => 'samplemessage',
+        ];
+
+        $response = $this->post('/message' ,$data);
+
+        $this->actingAs($admin_user);
+
+        $message = Message::latest()->first();
+        $response = $this->post(route('reply', [ //返信する
+            'message_id' => $message->id,
+            'content' => 'samplereply',
+        ]));
+
+        $this->actingAs($login_user);
+        $this -> assertDatabaseHas('notifications', [ //通知が未読であることを確認
+            'read_at' => NULL,
+        ]);
+
+        $response = $this->get(route('read', [
+            'notification_id' => $login_user -> unreadNotifications() -> first() -> id,
+        ]));
+
+        $this -> assertDatabaseMissing('notifications', [ //通知が既読化されているか確認
+            'read_at' => NULL,
+        ]);
+    }
 }
