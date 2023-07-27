@@ -63,7 +63,7 @@ class UserControllerTest extends TestCase
         Notification::assertSentTo($admin_user, MessageNotification::class);
     }
 
-    public function testSendReply() //sendMessageのテスト
+    public function testSendReply() //sendReplyのテスト
     { 
         $login_user = User::factory() -> create();
         $admin_user = User::factory() -> create();
@@ -82,7 +82,7 @@ class UserControllerTest extends TestCase
 
         Notification::fake(); //通知が実際に送信されないようにする
 
-        $response = $this->post(route('reply', [ //お気に入り登録
+        $response = $this->post(route('reply', [ //返信する
             'message_id' => $message->id,
             'content' => 'samplereply',
         ]));
@@ -100,5 +100,35 @@ class UserControllerTest extends TestCase
     public function testMessages() //messagesのテスト
     {
         $login_user = User::factory() -> create();
+
+        $this -> actingAs($login_user);
+
+        $data = [
+            'title' => 'sampletitle',
+            'content' => 'samplemessage',
+        ];
+        $response = $this->post('/message' ,$data);
+        $response = $this->get('/list_messages')->assertSee("sampletitle"); //投稿したメッセージのタイトルが表示されているか確認
     }
+
+    public function testMessage() //messageのテスト
+    {
+        $login_user = User::factory() -> create();
+        $this -> actingAs($login_user);
+
+        $data = [
+            'title' => 'sampletitle',
+            'content' => 'samplemessage',
+        ];
+        $response = $this->post('/message' ,$data);
+        $message = Message::latest()->first();
+
+        $response = $this->get(route('message', [ //メッセージ個別ページ
+            'message_id' => $message->id,
+        ]))->assertSee("samplemessage");
+
+        $response->assertSee("sampletitle"); //タイトルとメッセージ内容が表示されているか確認
+    }
+
+    
 }
