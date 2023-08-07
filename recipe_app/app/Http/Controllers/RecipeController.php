@@ -29,7 +29,21 @@ class RecipeController extends Controller
             return $val1['id']===$val2['id'];
         };
 
-        //エンドポイント
+        $textToTranslate = $request->word; // フォームからのテキストを取得
+
+        $response = Http::get('https://api-free.deepl.com/v2/translate', [ //検索ワードを日本語から英語に変換
+            'auth_key' => env('DEEPL_API_KEY'),
+            'text' => $textToTranslate,
+            'source_lang' => 'JA', // 入力テキストの言語（日本語）
+            'target_lang' => 'EN', // 翻訳後の言語（英語）
+        ]);
+
+        $translatedText = $response->json()['translations'][0]['text'];
+        // 正規表現を使用してカッコ部分を削除（変換結果にカッコで注釈があったのでそれを削除）
+        $cleanedText = preg_replace('/\([^)]+\)/', '', $translatedText);
+
+
+        //Spoonacular apiのエンドポイント
         $endpoint = "https://api.spoonacular.com/recipes/complexSearch";
 
         // ページネーションするためにページ番号と1ページあたりのアイテム数を指定
@@ -41,7 +55,7 @@ class RecipeController extends Controller
         if ($request->sort === 'price' || $request->sort === 'time') { //ソート基準が時間かお金の場合はsortDirectionを昇順にする
             $response = Http::get($endpoint, [ //準備時間の最大値を設定して取得
                 'apiKey' => env('SPOONACULAR_KEY'),
-                'query' => $request->word,
+                'query' => $cleanedText,
                 'maxReadyTime' => (int)$request->maxReadyTime,
                 'sort' => $request->sort,
                 'sortDirection' => 'asc',
@@ -53,7 +67,7 @@ class RecipeController extends Controller
             if ($request->has('maxCalories')) { //最大カロリー量を設定して取得
                 $response = Http::get($endpoint, [ 
                     'apiKey' => env('SPOONACULAR_KEY'),
-                    'query' => $request->word,
+                    'query' => $cleanedText,
                     'maxCalories' => (int)$request->maxCalories,
                     'sort' => $request->sort,
                     'sortDirection' => 'asc',
@@ -66,7 +80,7 @@ class RecipeController extends Controller
             if ($request->has('minProtein')) { //最小タンパク質量を設定して取得
                 $response = Http::get($endpoint, [
                     'apiKey' => env('SPOONACULAR_KEY'),
-                    'query' => $request->word,
+                    'query' => $cleanedText,
                     'minProtein' => (int)$request->minProtein,
                     'sort' => $request->sort,
                     'sortDirection' => 'asc',
@@ -78,7 +92,7 @@ class RecipeController extends Controller
         } else { //ソート基準が時間かお金以外の場合はsortDirectionを降順(デフォルト)にする
             $response = Http::get($endpoint, [ //準備時間の最大値を設定して取得
                 'apiKey' => env('SPOONACULAR_KEY'),
-                'query' => $request->word,
+                'query' => $cleanedText,
                 'maxReadyTime' => (int)$request->maxReadyTime,
                 'sort' => $request->sort,
                 'number' => 100,
@@ -89,7 +103,7 @@ class RecipeController extends Controller
             if ($request->has('maxCalories')) { //最大カロリー量を設定して取得
                 $response = Http::get($endpoint, [ 
                     'apiKey' => env('SPOONACULAR_KEY'),
-                    'query' => $request->word,
+                    'query' => $cleanedText,
                     'maxCalories' => (int)$request->maxCalories,
                     'sort' => $request->sort,
                     'number' => 100,
@@ -101,7 +115,7 @@ class RecipeController extends Controller
             if ($request->has('minProtein')) { //最小タンパク質量を設定して取得
                 $response = Http::get($endpoint, [
                     'apiKey' => env('SPOONACULAR_KEY'),
-                    'query' => $request->word,
+                    'query' => $cleanedText,
                     'minProtein' => (int)$request->minProtein,
                     'sort' => $request->sort,
                     'number' => 100,

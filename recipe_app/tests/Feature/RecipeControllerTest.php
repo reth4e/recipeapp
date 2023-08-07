@@ -36,7 +36,6 @@ class RecipeControllerTest extends TestCase
             'word' => 'pasta',
             'maxReadyTime' => 30,
             'sort' => 'price',
-            
         ];
 
         // テスト対象のアクションを呼び出す
